@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Calculadora de Carbohidratos 🍎</title>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+ <style>
+ * {
+ margin: 0;
+ padding: 0;
+ box-sizing: border-box;
+ font-family: 'Inter', sans-serif;
+ }
+
+ body {
+ background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+ min-height: 100vh;
+ padding: 24px 16px;
+ }
+
+ .app-container {
+ max-width: 440px;
+ margin: 0 auto;
+ }
+
+ .header {
+ text-align: center;
+ margin-bottom: 32px;
+ }
+
+ .header h1 {
+ font-size: 28px;
+ font-weight: 700;
+ color: #0d47a1;
+ margin-bottom: 8px;
+ }
+
+ .header p {
+ color: #1976d2;
+ font-size: 15px;
+ }
+
+ .card {
+ background: white;
+ border-radius: 24px;
+ padding: 28px 24px;
+ box-shadow: 0 12px 32px rgba(13, 71, 161, 0.12);
+ margin-bottom: 20px;
+ transition: transform 0.2s ease;
+ }
+
+ .card:hover {
+ transform: translateY(-2px);
+ }
+
+ .label {
+ font-weight: 600;
+ color: #1976d2;
+ font-size: 14px;
+ margin-bottom: 8px;
+ display: block;
+ }
+
+ input, select {
+ width: 100%;
+ padding: 14px 16px;
+ border: 2px solid #e3f2fd;
+ border-radius: 14px;
+ font-size: 15px;
+ background-color: #f8fbff;
+ margin-bottom: 18px;
+ transition: all 0.3s ease;
+ }
+
+ input:focus, select:focus { 
+ outline: none;
+ border-color: #2196f3;
+ box-shadow: 0 0 0 4px rgba(33, 150, 243, 0.1);
+ }
+
+ .btn-agregar {
+ width: 100%;
+ padding: 16px;
+ background: linear-gradient(90deg, #1976d2 0%, #2196f3 100%);
+ color: white;
+ border: none;
+ border-radius: 14px;
+ font-size: 16px;
+ font-weight: 600;
+ cursor: pointer;
+ box-shadow: 0 6px 16px rgba(25, 118, 210, 0.3);
+ transition: all 0.3s ease;
+ }
+
+ .btn-agregar:hover {
+ transform: translateY(-2px);
+ box-shadow: 0 8px 20px rgba(25, 118, 210, 0.35);
+ }
+
+ .lista-seleccion {
+ margin-top: 24px;
+ padding-top: 20px;
+ border-top: 1px solid #e3f2fd;
+ }
+
+ .lista-seleccion h3 {
+ font-size: 16px;
+ font-weight: 600;
+ color: #1976d2;
+ margin-bottom: 12px;
+ }
+
+ .item-alimento {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ padding: 12px 0;
+ border-bottom: 1px solid #f0f7ff;
+ font-size: 15px;
+ }
+
+ .item-alimento:last-child {
+ border-bottom: none;
+ }
+
+ .btn-quitar {
+ background-color: #ffebee;
+ color: #c62828;
+ border: none;
+ border-radius: 8px;
+ padding: 6px 10px;
+ font-size: 12px;
+ cursor: pointer;
+ transition: all 0.2s ease;
+ }
+
+ .btn-quitar:hover {
+ background-color: #ffcdd2;
+ }
+
+ .total-card {
+ background: linear-gradient(90deg, #e3f2fd 0%, #bbdefb 100%);
+ border-radius: 16px;
+ padding: 20px;
+ text-align: center;
+ margin-top: 20px;
+ }
+
+ .total-texto {
+ font-size: 15px;
+ color: #0d47a1;
+ font-weight: 500;
+ }
+
+ .total-valor {
+ font-size: 36px;
+ font-weight: 700;
+ color: #0d47a1;
+ margin-top: 4px;
+ }
+
+ .btn-limpiar {
+ width: 100%;
+ padding: 14px;
+ background-color: #f5f5f5;
+ color: #424242;
+ border: none;
+ border-radius: 14px;
+ font-weight: 600;
+ margin-top: 12px;
+ cursor: pointer;
+ transition: all 0.3s ease;
+ }
+
+ .btn-limpiar:hover {
+ background-color: #eeeeee;
+ }
+
+ .recomendacion {
+ margin-top: 16px;
+ font-size: 13px;
+ color: #1565c0;
+ text-align: center;
+ }
+ </style>
+</head>
+<body>
+
+<div class="app-container">
+ <div class="header">
+ <h1>🥗 Calculadora de Carbohidratos</h1>
+ <p>Busca tu comida, calcula por medidas caseras</p>
+ </div>
+
+ <div class="card">
+ <label class="label">🔍 Buscar alimento</label>
+ <input type="text" id="buscador" placeholder="Escribe arroz, hamburguesa, manzana...">
+
+ <label class="label">Selecciona tu alimento</label>
+ <select id="alimento">
+ <!-- Cereales y harinas -->
+<option value="30"> 🥯 Almojábana (1 unidad mediana - 100 gramos)</option>
+<option value="15"> 🌾 Amaranto cocido (8 cdas soperas cocidas - 80 gramos)</option>
+<option value="30"> 🫓 Arepa de maíz blanco o amarillo (1 unidad del tamaño de un CD - 80 gramos)</option>
+<option value="15"> 🫓 Arepa paisa (1 unidad del tamaño de un CD - 50 gramos)</option>
+<option value="15"> 🫓 Arepa redonda pequeña (1 unidad del tamaño de un CD - 50 gramos)</option>
+<option value="15"> 🍚 Arroz cocido (1/2 taza - 50 gramos)</option>
+<option value="15"> 🍚 Arroz integral (1 taza - 65 gramos)</option>
+<option value="15"> 🥣 Avena cruda en hojuelas (3 cdas soperas rasas - 20 gramos)</option>
+<option value="30"> 🧆 Buñuelo (1 unidad mediana - 80 gramos)</option>
+<option value="29"> 🥣 Cereal integral Nestlé (1 taza - 35 gramos)</option>
+<option value="15"> 🥣 Cereal Corn Flakes (1/2 taza - 20 gramos)</option>
+<option value="24"> 🌾 Cebada perlada cocida (3 cdas soperas rasas - 30 gramos)</option>
+<option value="33"> 🥐 Croissant de mantequilla o queso (1 unidad mediana - 70 gramos)</option>
+<option value="30"> 🥟 Empanada (1 unidad mediana - 52 gramos)</option>
+<option value="30"> 🌽 Envuelto de mazorca (1 unidad mediana - 100 gramos)</option>
+<option value="24"> 🌽 Fécula de maíz (4 cdas soperas rasas - 30 gramos)</option>
+<option value="15"> 🍪 Galletas saltinas o integrales (3 unidades - 20 gramos)</option>
+<option value="15"> 🥣 Granola (1/2 taza - 30 gramos)</option>
+<option value="15"> 🌾 Harina de trigo (3 cdas soperas rasas - 20 gramos)</option>
+<option value="15"> 🍿 Maíz pira preparado (3 tazas - 80 gramos)</option>
+<option value="35"> 🍰 Mantecada, ponqué o torta sin dulce (1 tajada mediana - 65 gramos)</option>
+<option value="30"> 🌽 Mazorca cocida (1 unidad grande - 150 gramos)</option>
+<option value="15"> 🌽 Mazorca desgranada (3 cdas soperas rasas - 50 gramos)</option>
+<option value="30"> 🍞 Mogolla (1 unidad - 30 gramos)</option>
+<option value="15"> 🍞 Pan blanco, integral o centeno (1 tajada mediana - 30 gramos)</option>
+<option value="15"> 🍞 Pan blandito o rollo de panadería (1 unidad pequeña - 30 gramos)</option>
+<option value="15"> 🥞 Pancake (1 unidad del tamaño de un CD - 30 gramos)</option>
+<option value="35"> 🌭 Pan perro (1 unidad mediana - 68 gramos)</option>
+<option value="45"> 🍔 Pan hamburguesa (1 unidad mediana - 92 gramos)</option>
+<option value="30"> 🧀 Pan de bono (1 unidad mediana - 40 gramos)</option>
+<option value="30"> 🥯 Pan de yuca (1 unidad grande - 70 gramos)</option>
+<option value="30"> 🫓 Pan pita (1 unidad del tamaño de un CD - 50 gramos)</option>
+<option value="15"> 🍝 Pasta (1 taza - 55 gramos)</option>
+<option value="15"> 🍝 Pasta integral (1 taza - 70 gramos)</option>
+<option value="15"> 🍞 Tostada o calado (1 unidad pequeña - 30 gramos)</option>
+<option value="15"> 🫓 Tortilla mexicana (1 unidad mediana - 30 gramos)</option>
+<option value="8"> 🌮 Taco mexicano sin relleno (1 unidad - 13 gramos)</option>
+<option value="15"> 🌾 Quinoa cocida (7 cdas soperas rasas - 70 gramos)</option>
+<option value="15"> 🧇 Waffle (1 unidad mediana, 6 cm de grosor - 45 gramos)</option>
+
+<!-- LÁCTEOS Y BEBIDAS LÁCTEAS -->
+<option value="15"> 🥛 Avena Finesse (1 vaso - 250 ml)</option>
+<option value="15"> 🥛 Kumis (1 vaso - 100 ml)</option>
+<option value="15"> 🥛 Leche entera (1 vaso - 200 ml)</option>
+<option value="15"> 🥛 Leche semidescremada o descremada (1 vaso - 300 ml)</option>
+<option value="15"> 🥛 Leche deslactosada (1 vaso - 200 ml)</option>
+<option value="10"> 🥛 Leche en polvo entera (3 cdas colmadas - 27 gramos)</option>
+<option value="4"> 🥛 Leche de soya sin azúcar (1 vaso - 100 ml)</option>
+<option value="11"> 🥛 Yogurt Finesse (1 vaso - 180 ml)</option>
+<option value="12"> 🥛 Yogurt Slight Colanta (1 vaso - 200 ml)</option>
+<option value="4"> 🥛 Yogurt Benecol (1 vaso pequeño - 100 ml)</option>
+<option value="5"> 🥛 Yogurt Pasco sin azúcar (1 vaso - 150 ml)</option>
+<option value="10"> 🥛 Yogurt San Fernando Light (1 vaso - 160 ml)</option>
+<option value="12"> 🥛 Yogurt Slim Doña Leche (1 vaso - 200 ml)</option>
+<option value="18"> 🍦 Helado Light Mimos (1 bola - 70 ml)</option>
+<option value="20"> 🍧 Paleta Light Robin Hood (1 unidad - 60 ml)</option>
+
+ <!-- Tubérculos -->
+<option value="15"> 🥕 Arracacha (1/2 unidad mediana - 75 gramos)</option>
+<option value="15"> 🥔 Papa común (1 unidad mediana - 80 gramos)</option>
+<option value="15"> 🥔 Papa criolla (3 unidades pequeñas - 80 gramos)</option>
+<option value="15"> 🍟 Papa francesa (10 unidades delgadas - 48 gramos)</option>
+<option value="15"> 🍌 Plátano colí con cáscara (1 unidad pequeña - 145 gramos)</option>
+<option value="15"> 🍌 Plátano hartón (1/4 unidad o 2 tajadas medianas - 40 gramos)</option>
+<option value="15"> 🥔 Puré de papa (2 bolas medianas - 70 gramos)</option>
+<option value="15"> 🍌 Láminas de plátano verde (10 láminas o moneditas delgadas - 30 gramos)</option>
+<option value="15"> 🍠 Ñame (1 trozo mediano - 67 gramos)</option>
+<option value="15"> 🍠 Yuca (1 astilla pequeña - 40 gramos)</option>
+
+ <!-- Legumbres --> 
+<option value="15"> 🌰 Almendras (1/2 taza - 60 gramos)</option>
+<option value="15"> 🫛 Arveja seca cocida (1/2 taza - 70 gramos)</option>
+<option value="15"> 🫘 Frijol blanco cocido (1/2 taza - 60 gramos)</option>
+<option value="15"> 🫘 Frijol rojo cocido (1/2 taza - 60 gramos)</option>
+<option value="15"> 🫘 Frijol blanco cabeza negra (1/2 taza - 70 gramos)</option>
+<option value="15"> 🫘 Garbanzo cocido (1/2 taza - 55 gramos)</option>
+<option value="15"> 🫘 Lenteja cocida (1/2 taza - 75 gramos)</option>
+<option value="15"> 🥜 Maní (1/2 taza - 70 gramos)</option>
+<option value="15"> 🫘 Soya cocida (1/2 taza - 150 gramos)</option>
+ 
+ <!-- Comidas rápidas -->
+ <option value="40">🍔 Hamburguesa sencilla (1 unidad)</option>
+ <option value="50">🌭 Perro caliente (1 unidad)</option>
+ <option value="35">🍟 Papas fritas (1 porción mediana)</option>
+ <option value="55">🍕 Pizza (1 rebanada mediana)</option>
+ <option value="42">🌮 Taco de carne (1 unidad)</option>
+<option value="38"> 🥘 Arroz con pollo (1 taza - 170 gramos)</option>
+<option value="35"> 🍕 Pizza congelada Zenú (1 tajada mediana - 130 gramos)</option>
+<option value="47"> 🍝 Lasagna congelada Zenú (1 porción mediana - 445 gramos)</option>
+<option value="14"> 🍗 Nuggets de pollo Zenú (5 unidades - 85 gramos)</option>
+<option value="20"> 🍌 Aborrajado sin dulce Kalisto (1 unidad pequeña - 112 gramos)</option>
+<option value="75"> 🫔 Tamal santandereano sin hoja (1 unidad mediana - 200 gramos)</option>
+<option value="60"> 🫔 Tamal tolimense sin hojas (1 unidad mediana - 325 gramos)</option>
+<option value="30"> 🥣 Cereal All Bran (6 cdas rasas - 40 gramos)</option>
+<option value="21"> 🍞 Tostada Bimbo (2 unidades - 31 gramos)</option>
+<option value="4"> 🍧 Paleta de agua Mimos (1 unidad - 70 gramos)</option>
+<option value="12"> 🥔 Papas de paquete Margarita (1 paquete - 25 gramos)</option>
+<option value="13"> 🥨 Rosquitas Cronch (1 paquete - 19 gramos)</option>
+<option value="20"> 🍌 Tajaditas de plátano Natuchip (1 paquete - 28 gramos)</option>
+<option value="3"> ☕ Insta Cream (1 sobre - 4 gramos)</option>
+<option value="2"> 🍫 Choco Lyne (1 pastilla - 4 gramos)</option>
+<option value="15"> 🍫 Choco Lyne polvo (2 cdas rasas - 2 gramos)</option>
+<option value="2"> 🍫 Choco Express (1 cdita polvo - 4 gramos)</option>
+<option value="15"> 🥜 Maní de paquete (1 paquete - 70 gramos)</option>
+<option value="10"> 🥜 Marañón (1 paquete - 40 gramos)</option>
+<option value="11"> 🥜 Mezcla de nueces (1 paquete - 50 gramos)</option>
+<option value="13.5"> 🍯 Arequipe Light Antaño (2 cdas soperas rasas - 25 gramos)</option>
+
+ <!-- Frutas -->
+ <option value="3.5"> 🥑 Aguacate (1/4 unidad pequeña - 80 gramos)</option>
+ <option value="15"> 🍈 Añón (1 unidad pequeña - 150 gramos)</option>
+ <option value="15"> 🍌 Banano común (1/2 unidad mediana - 100 gramos)</option>
+ <option value="15"> 🍌 Banano bocadillo (1/2 unidad mediana - 65 gramos)</option>
+ <option value="15"> 🍒 Cerezas (15 unidades - 65 gramos)</option>
+ <option value="15"> 🍈 Chirimoya (1/2 unidad mediana - 150 gramos)</option>
+ <option value="10"> 🌴 Chontaduro (1 unidad pequeña - 27 gramos)</option>
+ <option value="15"> 🍑 Ciruela común (3 unidades pequeñas - 70 gramos)</option>
+ <option value="15"> 🍑 Ciruela importada (1 unidad mediana - 116 gramos)</option>
+ <option value="15"> 🍇 Ciruela pasa (3 unidades pequeñas - 25 gramos)</option>
+ <option value="2"> 🥥 Coco (3 cucharadas postreras - 15 gramos)</option>
+ <option value="15"> 🥭 Curuba (6 unidades medianas - 238 gramos)</option>
+ <option value="15"> 🍑 Durazno nacional (2 unidades pequeñas - 147 gramos)</option>
+ <option value="15"> 🍑 Durazno importado (1 unidad mediana - 130 gramos)</option>
+ <option value="15"> 🍈 Feijoa (2 unidades medianas - 125 gramos)</option>
+ <option value="15"> 🍓 Frambuesa (1 taza - 210 gramos)</option>
+ <option value="15"> 🍓 Fresa (13 unidades pequeñas - 210 gramos)</option>
+ <option value="15"> 🍈 Granadilla (1 unidad mediana - 130 gramos)</option>
+ <option value="15"> 🍐 Guayaba (1 unidad mediana - 120 gramos)</option>
+ <option value="15"> 🍈 Guanábana (6 cucharadas soperas rasas - 170 gramos)</option>
+ <option value="15"> 🟣 Higo (2 unidades medianas - 110 gramos)</option>
+ <option value="15"> 🥝 Kiwi (2 unidades medianas - 100 gramos)</option>
+ <option value="15"> 🍊 Mandarina (1 unidad mediana - 150 gramos)</option>
+ <option value="15"> 🥭 Mango azúcar (1 unidad pequeña - 165 gramos)</option>
+ <option value="15"> 🥭 Mango Tommy (3/4 taza / 5 tajadas - 85 gramos)</option>
+ <option value="15"> 🍎 Manzana (1 unidad pequeña - 100 gramos)</option>
+ <option value="15"> 🍈 Melón (2 tajadas - 180 gramos)</option>
+ <option value="15"> 🫐 Moras (12 unidades - 125 gramos)</option>
+ <option value="15"> 🍈 Níspero sin semillas (2 unidades pequeñas - 110 gramos)</option>
+ <option value="15"> 🍊 Naranja (1 unidad pequeña - 120 gramos)</option>
+ <option value="15"> 🍊 Pomelo (1 unidad - 200 gramos)</option>
+ <option value="15"> 🍈 Papaya (1 taza picada - 150 gramos)</option>
+ <option value="15"> 🍐 Pera (1 unidad mediana - 100 gramos)</option>
+ <option value="15"> 🍍 Piña (1 tajada delgada - 120 gramos)</option>
+ <option value="15"> 🐉 Pitahaya (1 unidad mediana - 220 gramos)</option>
+ <option value="15"> 🍉 Sandía/Patilla (1 tajada delgada - 210 gramos)</option>
+ <option value="15"> 🟤 Tamarindo (1 1/2 cucharadas soperas - 50 gramos)</option>
+ <option value="15"> 🍅 Tomate de árbol (2 unidades medianas - 335 gramos)</option>
+ <option value="15"> 🍊 Toronja (1 unidad grande - 335 gramos)</option>
+ <option value="15"> 🟡 Uchuva (12 unidades pequeñas - 70 gramos)</option>
+ <option value="15"> 🍇 Uva nacional (20 unidades - 180 gramos)</option>
+ <option value="15"> 🍇 Uva negra (16 unidades - 80 gramos)</option>
+ <option value="15"> 🟤 Zapote (1 unidad mediana - 400 gramos)</option>
+
+ <!-- Vegetales -->
+ <option value="10"> 🥦 Verdura cocida (1 taza - 180 gramos)</option>
+ <option value="5"> 🥬 Verdura cruda (1 taza - 100 gramos)</option> 
+ <option value="6">🥦 Brócoli cocido (1 taza)</option>
+ <option value="5">🥕 Zanahoria cocida (1 taza)</option>
+ <option value="4">🥬 Espinaca cocida (1 taza)</option>
+ <option value="7">🍅 Tomate (1 taza)</option>
+ <option value="3">🥒 Pepino (1 taza)</option>
+ <option value="8">🌽 Mazorca de maíz (1 unidad)</option>
+ <option value="5">🥗 Ensalada mixta (1 taza)</option>
+
+ <!-- CEREALES Y DERIVADOS -->
+ <option value="30"> 🥯 Almojábana (1 unidad mediana - 100 gramos)</option>
+ <option value="15"> 🌾 Amaranto cocido (8 cdas soperas cocidas - 80 gramos)</option>
+ <option value="30"> 🫓 Arepa de maíz blanco o amarillo (1 unidad del tamaño de un CD - 80 gramos)</option>
+ <option value="15"> 🫓 Arepa paisa (1 unidad del tamaño de un CD - 50 gramos)</option>
+ <option value="15"> 🫓 Arepa redonda pequeña (1 unidad del tamaño de un CD - 50 gramos)</option>
+ <option value="15"> 🥣 Avena cruda en hojuelas (3 cdas soperas rasas - 20 gramos)</option>
+ <option value="30"> 🧆 Buñuelo (1 unidad mediana - 80 gramos)</option>
+ <option value="29"> 🥣 Cereal integral Nestlé (1 taza - 35 gramos)</option>
+ <option value="15"> 🥣 Cereal Corn Flakes (1/2 taza - 20 gramos)</option>
+ <option value="24"> 🌾 Cebada perlada cocida (3 cdas soperas rasas - 30 gramos)</option>
+ <option value="33"> 🥐 Croissant de mantequilla o queso (1 unidad mediana - 70 gramos)</option>
+ <option value="30"> 🥟 Empanada (1 unidad mediana - 52 gramos)</option>
+ <option value="30"> 🌽 Envuelto de mazorca (1 unidad mediana - 100 gramos)</option>
+ <option value="24"> 🌽 Fécula de maíz (4 cdas soperas rasas - 30 gramos)</option>
+ <option value="15"> 🍪 Galletas saltinas o integrales (3 unidades - 20 gramos)</option>
+ <option value="15"> 🥣 Granola (1/2 taza - 30 gramos)</option>
+ <option value="15"> 🌾 Harina de trigo (3 cdas soperas rasas - 20 gramos)</option>
+ <option value="15"> 🍿 Maíz pira preparado (3 tazas - 80 gramos)</option>
+ <option value="35"> 🍰 Mantecada, ponqué o torta sin dulce (1 tajada mediana - 65 gramos)</option>
+ <option value="30"> 🌽 Mazorca cocida (1 unidad grande - 150 gramos)</option>
+ <option value="15"> 🌽 Mazorca desgranada (3 cdas soperas rasas - 50 gramos)</option>
+ <option value="30"> 🍞 Mogolla (1 unidad - 30 gramos)</option>
+ <option value="15"> 🍞 Pan blanco, integral o centeno (1 tajada mediana - 30 gramos)</option>
+ <option value="15"> 🍞 Pan blandito o rollo de panadería (1 unidad pequeña - 30 gramos)</option>
+ <option value="15"> 🥞 Pancake (1 unidad del tamaño de un CD - 30 gramos)</option>
+ <option value="35"> 🌭 Pan perro (1 unidad mediana - 68 gramos)</option>
+ <option value="45"> 🍔 Pan hamburguesa (1 unidad mediana - 92 gramos)</option>
+ <option value="30"> 🧀 Pan de bono (1 unidad mediana - 40 gramos)</option>
+ <option value="30"> 🥯 Pan de yuca (1 unidad grande - 70 gramos)</option>
+ <option value="30"> 🫓 Pan pita (1 unidad del tamaño de un CD - 50 gramos)</option>
+ <option value="15"> 🍝 Pasta (1 taza - 55 gramos)</option>
+ <option value="15"> 🍝 Pasta integral (1 taza - 70 gramos)</option>
+ <option value="15"> 🍞 Tostada o calado (1 unidad pequeña - 30 gramos)</option>
+ <option value="15"> 🫓 Tortilla mexicana (1 unidad mediana - 30 gramos)</option>
+ <option value="8"> 🌮 Taco mexicano sin relleno (1 unidad - 13 gramos)</option>
+ <option value="15"> 🌾 Quinoa cocida (7 cdas soperas rasas - 70 gramos)</option>
+ <option value="15"> 🧇 Waffle (1 unidad mediana, 6 cm de grosor - 45 gramos)</option>
+ <option value="5">🥛 Leche entera (1 taza)</option>
+ <option value="9">🍦 Yogur natural (1 taza)</option>
+ <option value="10">🍯 Azúcar / Miel (1 cucharada)</option>
+
+<!-- BEBIDAS GASEOSAS Y ALCOHÓLICAS (según la hoja: consumo no recomendado; alcohólicas solo para mayores de edad) -->
+<option value="42"> 🥤 Gaseosa normal (1 botella - 400 ml)</option>
+<option value="35"> 🍵 Té (1 botella - 500 ml)</option>
+<option value="7.4"> 🍺 Cerveza (1 vaso - 200 ml)</option>
+<option value="0.8"> 🍷 Vino blanco (1 copa pequeña - 50 ml)</option>
+<option value="1.7"> 🍷 Vino tinto (1 copa pequeña - 50 ml)</option>
+<option value="2.1"> 🥂 Champagne (1 copa pequeña - 50 ml)</option>
+
+ </select>
+
+ <label class="label">Cantidad de porciones</label>
+ <input type="number" id="cantidad" value="1" step="0.25" min="0.25" placeholder="Ej: 1, 1.5, 2">
+
+ <button class="btn-agregar" id="botonAgregar">➕ Agregar a la comida</button>
+
+ <div class="lista-seleccion">
+ <h3>Tu comida actual</h3>
+ <div id="listaItems"></div> 
+ </div>
+ 
+ <div class="total-card">
+ <div class="total-texto">Total carbohidratos netos</div>
+ <div class="total-valor" id="totalCarbos">0 g</div>
+ </div>
+
+ <p class="recomendacion">💡 Recomendación: comida principal entre 45g y 60g de carbohidratos</p>
+
+ <button class="btn-limpiar" id="botonLimpiar">🗑️ Limpiar toda la comida</button>
+ </div>
+</div>
+
+<script>
+ let total = 0; 
+ let items = []; 
+ const select = document.getElementById('alimento');
+ const buscador = document.getElementById('buscador');
+
+ // Buscador en tiempo real
+ buscador.addEventListener('input', () => {
+ const textoBusqueda = buscador.value.toLowerCase();
+ for(let opcion of select.options) {
+ const coincide = opcion.text.toLowerCase().includes(textoBusqueda);
+ opcion.style.display = coincide ? 'block' : 'none';
+ }
+ select.selectedIndex = [].findIndex.call(select.options, op => op.style.display !== 'none');
+ });
+
+ // Conectar botones de forma segura
+ document.getElementById('botonAgregar').addEventListener('click', agregarAlimento); 
+ document.getElementById('botonLimpiar').addEventListener('click', limpiarComida); 
+
+ function agregarAlimento() {
+ const cantidad = parseFloat(document.getElementById('cantidad').value); 
+ const carbosPorPorcion = parseFloat(select.value); 
+ const nombreAlimento = select.options[select.selectedIndex].text.split(' ').slice(1).join(' '); 
+ const totalPorItem = carbosPorPorcion * cantidad; 
+
+ const idItem = Date.now(); 
+ items.push({ id: idItem, nombre: nombreAlimento, cantidad, total: totalPorItem }); 
+ total += totalPorItem; 
+
+ renderizarLista(); 
+ document.getElementById('cantidad').value = 1; 
+ }
+
+ function quitarItem(id) {
+ const index = items.findIndex(item => item.id === id); 
+ if (index !== -1) {
+ total -= items[index].total; 
+ items.splice(index, 1); 
+ renderizarLista(); 
+ }
+ } 
+
+ function renderizarLista() {
+ const contenedor = document.getElementById('listaItems'); 
+ contenedor.innerHTML = ''; 
+
+ items.forEach(item => {
+ const itemElemento = document.createElement('div'); 
+ itemElemento.className = 'item-alimento'; 
+ itemElemento.innerHTML = `
+ <span>${item.cantidad}x ${item.nombre}</span>
+ <div style="display:flex; gap:8px; align-items:center;">
+ <span>${item.total.toFixed(1)}g</span>
+ <button class="btn-quitar" onclick="quitarItem(${item.id})">Quitar</button>
+ </div>
+ `; 
+ contenedor.appendChild(itemElemento); 
+ }); 
+
+ document.getElementById('totalCarbos').textContent = `${total.toFixed(1)} g`; 
+ }
+
+ function limpiarComida() {
+ total = 0; 
+ items = []; 
+ renderizarLista(); 
+ }
+</script> 
+
+</body>
+</html>
